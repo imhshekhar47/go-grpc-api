@@ -24,34 +24,37 @@ type AppConfig struct {
 	Application applicationConfig `yaml:"application"`
 }
 
+var DefaultAppConfig AppConfig = AppConfig{
+	Server: serverConfig{
+		Port: 8080,
+	},
+	Application: applicationConfig{
+		Name:    "go-grpc-api",
+		Version: "v1-SNAPSHOT",
+	},
+}
+
 var instance *AppConfig
 
 //GetAppConfig return config from application.yaml
 func GetAppConfig() AppConfig {
 	if nil == instance {
-		config := AppConfig{
-			Server: serverConfig{
-				Port: 8080,
-			},
-			Application: applicationConfig{
-				Name:    "go-grpc-api",
-				Version: "v1-SNAPSHOT",
-			},
-		}
+		config := AppConfig{}
 
 		yamlfile, err := ioutil.ReadFile("application.yaml")
 
 		if err != nil {
 			log.Printf("Error while reading application.yaml: %v\n", err)
-			return config
+			return DefaultAppConfig
 		}
 
 		err = yaml.Unmarshal(yamlfile, &config)
 
 		if err != nil {
 			log.Printf("Error while loading application.yml: %v\n", err)
-			return config
+			return DefaultAppConfig
 		}
+
 		instance = &config
 	}
 
