@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package="./actuator";
+
+package actuator;
+
+import "google/protobuf/empty.proto";
+
+message Health {
+    string status  = 1;
+}
+
+message Info {
+    string name = 1;
+    string version = 2;
+}
+
+service ActuatorService {
+    rpc GetHealth(google.protobuf.Empty) returns (Health) {};
+    rpc GetInfo(google.protobuf.Empty) returns (Info) {};
+}

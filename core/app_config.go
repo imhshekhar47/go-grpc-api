@@ -7,38 +7,53 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-//ServerConfig definition
-type ServerConfig struct {
+type serverConfig struct {
 	Mode string `yaml:"mode"`
 	Port int16  `yaml:"port"`
 }
 
-//AppConfig definition
-type AppConfig struct {
-	Server ServerConfig `yaml:"server"`
+type applicationConfig struct {
+	Name    string `yaml:"name"`
+	Version string `yaml:"version"`
 }
 
-//GetAppConfig return config from pplication.yaml
+//AppConfig definition
+//Description: main configuration model
+type AppConfig struct {
+	Server      serverConfig      `yaml:"server"`
+	Application applicationConfig `yaml:"application"`
+}
+
+var instance *AppConfig
+
+//GetAppConfig return config from application.yaml
 func GetAppConfig() AppConfig {
-	config := AppConfig{
-		Server: ServerConfig{
-			Port: 8080,
-		},
+	if nil == instance {
+		config := AppConfig{
+			Server: serverConfig{
+				Port: 8080,
+			},
+			Application: applicationConfig{
+				Name:    "go-grpc-api",
+				Version: "v1-SNAPSHOT",
+			},
+		}
+
+		yamlfile, err := ioutil.ReadFile("application.yaml")
+
+		if err != nil {
+			log.Printf("Error while reading application.yaml: %v\n", err)
+			return config
+		}
+
+		err = yaml.Unmarshal(yamlfile, &config)
+
+		if err != nil {
+			log.Printf("Error while loading application.yml: %v\n", err)
+			return config
+		}
+		instance = &config
 	}
 
-	yamlfile, err := ioutil.ReadFile("application.yml")
-
-	if err != nil {
-		log.Printf("Error while reading application.yaml: %v\n", err)
-		return config
-	}
-
-	err = yaml.Unmarshal(yamlfile, &config)
-
-	if err != nil {
-		log.Printf("Error while loading application.yml: %v\n", err)
-		return config
-	}
-
-	return config
+	return *instance
 }
