@@ -9,6 +9,7 @@ import (
 
 type Server struct {
 	config core.AppConfig
+	UnimplementedActuatorServiceServer
 }
 
 func NewServer(appConfig core.AppConfig) *Server {

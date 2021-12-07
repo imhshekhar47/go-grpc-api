@@ -9,7 +9,11 @@ clean_generarted() {
 }
 
 generate_pb() {
-    protoc -I="proto"  --go_out=plugins=grpc:"pb" proto/*.proto
+    #protoc -I="proto"  --go_out=plugins=grpc:"pb" proto/*.proto
+    protoc -I="proto" \
+        --go_out="pb" \
+        --go-grpc_out="pb" \
+        proto/*.proto
 }
 
 build() {

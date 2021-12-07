@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package="./stream";
+
+package stream;
+
+message PlayerInfo {
+    string playerId = 1; 
+}
+
+message PlayerScoreEvent {
+    oneof data {
+        PlayerInfo info = 1;
+        int32 score = 2;
+    }
+}
+
+message PlayerScore {
+    PlayerInfo info = 1;
+    int32 total_score = 2;
+}
+
+service StreamService {
+    rpc TrackScore(stream PlayerScoreEvent) returns (PlayerScore) {};
+}

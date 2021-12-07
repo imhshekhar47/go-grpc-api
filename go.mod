@@ -6,6 +6,7 @@ require (
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/golang/protobuf v1.5.2
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/onsi/gomega v1.17.0
 	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect
